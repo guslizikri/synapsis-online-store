@@ -3,8 +3,11 @@ package main
 import (
 	"fmt"
 	"log"
+	"synapsis-online-store/apps/routers"
 	"synapsis-online-store/config"
 	"synapsis-online-store/pkg"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
@@ -19,4 +22,13 @@ func main() {
 	if db != nil {
 		fmt.Println("DB Connected")
 	}
+
+	router := fiber.New(fiber.Config{
+		Prefork: true,
+		AppName: config.Cfg.App.Name,
+	})
+
+	routers.InitUser(router, db)
+
+	router.Listen(config.Cfg.App.Port)
 }
