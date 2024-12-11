@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var svc *ServiceUser
+var svcUser *ServiceUser
 
 func init() {
 	filename := "../../cmd/config.yaml"
@@ -28,7 +28,7 @@ func init() {
 		return
 	}
 	repo := repository.NewRepoUser(db)
-	svc = NewServiceUser(repo)
+	svcUser = NewServiceUser(repo)
 }
 
 func TestRegisterSuccess(t *testing.T) {
@@ -37,7 +37,7 @@ func TestRegisterSuccess(t *testing.T) {
 		Email:    fmt.Sprintf("%v@gmail.com", uuid.NewString()),
 		Password: "abcd1234",
 	}
-	err := svc.Register(context.Background(), req)
+	err := svcUser.Register(context.Background(), req)
 	require.Nil(t, err)
 }
 func TestRegisterFail(t *testing.T) {
@@ -49,13 +49,13 @@ func TestRegisterFail(t *testing.T) {
 			Email:    email,
 			Password: "abcd1234",
 		}
-		err := svc.Register(context.Background(), req)
+		err := svcUser.Register(context.Background(), req)
 		require.Nil(t, err)
 		// end preparation
 
 		//  sebelumnya regist berhasil dulu,
 		// kemudian regist lagi menggunakan email yg sama
-		err = svc.Register(context.Background(), req)
+		err = svcUser.Register(context.Background(), req)
 		require.NotNil(t, err)
 		require.Equal(t, "email already exists", err.Error())
 	})
@@ -70,7 +70,7 @@ func TestLogin(t *testing.T) {
 			Email:    email,
 			Password: pass,
 		}
-		err := svc.Register(context.Background(), registReq)
+		err := svcUser.Register(context.Background(), registReq)
 		require.Nil(t, err)
 		// end preparation
 		loginReq := request.LoginRequestPayload{
@@ -78,7 +78,7 @@ func TestLogin(t *testing.T) {
 			Password: pass,
 		}
 
-		token, err := svc.Login(context.Background(), loginReq)
+		token, err := svcUser.Login(context.Background(), loginReq)
 		require.Nil(t, err)
 		require.NotEmpty(t, token)
 		log.Println(token)

@@ -29,6 +29,7 @@ func main() {
 	})
 
 	routers.InitUser(router, db)
+	routers.InitProduct(router, db)
 
 	router.Listen(config.Cfg.App.Port)
 }

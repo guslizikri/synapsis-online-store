@@ -1,5 +1,5 @@
 app:
-  name: nbid-online-shop
+  name: synapsis-online-store
   port: ":8081"
   encryption:
     salt: 10
@@ -10,7 +10,7 @@ db:
   port: 5432
   user: admin
   password: admin
-  name: ticket
+  name: online-store
   connection_pool:
     max_idle_connection: 10
     max_open_connection: 30
