@@ -30,8 +30,8 @@ var (
 	// cart item
 	ErrQuantityInvalid = errors.New("quantity must be greater than 0")
 	// transactions
-	ErrAmountInvalid          = errors.New("invalid amount")
-	ErrAmountGreaterThanStock = errors.New("amount greater than stock")
+	ErrAmountInvalid            = errors.New("invalid amount")
+	ErrQuantityGreaterThanStock = errors.New("quantity greater than stock")
 )
 
 type Error struct {

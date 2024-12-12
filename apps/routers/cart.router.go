@@ -15,17 +15,17 @@ func InitCart(router fiber.Router, db *sqlx.DB) {
 	svc := services.NewServiceCart(repo)
 	handler := handlers.NewHandlerCart(svc)
 
-	productRouter := router.Group("cart")
+	cartRouter := router.Group("cart")
 	{
-		productRouter.Get("",
+		cartRouter.Get("",
 			middleware.CheckAuth(),
 			handler.GetListCartItem,
 		)
-		productRouter.Post("",
+		cartRouter.Post("",
 			middleware.CheckAuth(),
 			handler.CreateCartItem,
 		)
-		productRouter.Delete("/:product_id",
+		cartRouter.Delete("/:product_id",
 			middleware.CheckAuth(),
 			handler.DeleteCartItem,
 		)
