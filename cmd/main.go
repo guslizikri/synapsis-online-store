@@ -30,6 +30,7 @@ func main() {
 
 	routers.InitUser(router, db)
 	routers.InitProduct(router, db)
+	routers.InitCart(router, db)
 
 	router.Listen(config.Cfg.App.Port)
 }

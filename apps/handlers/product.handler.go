@@ -20,7 +20,7 @@ func NewHandlerProduct(svc *services.ServiceProduct) *HandlerProduct {
 	}
 }
 
-func (h HandlerProduct) CreateProduct(ctx *fiber.Ctx) error {
+func (h *HandlerProduct) CreateProduct(ctx *fiber.Ctx) error {
 	req := request.CreateProductRequestPayload{}
 
 	err := ctx.BodyParser(&req)
@@ -48,7 +48,7 @@ func (h HandlerProduct) CreateProduct(ctx *fiber.Ctx) error {
 		pkg.WithMessage("create product success"),
 	).Send(ctx)
 }
-func (h HandlerProduct) GetListProduct(ctx *fiber.Ctx) error {
+func (h *HandlerProduct) GetListProduct(ctx *fiber.Ctx) error {
 	req := request.ListProductRequestPayload{}
 
 	err := ctx.QueryParser(&req)

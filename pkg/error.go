@@ -26,6 +26,9 @@ var (
 	ErrPriceInvalid       = errors.New("price must be greater than 0")
 	ErrStockInvalid       = errors.New("stock must be greater than 0")
 	ErrIDCategorieInvalid = errors.New("invalid id categorie")
+
+	// cart item
+	ErrQuantityInvalid = errors.New("quantity must be greater than 0")
 	// transactions
 	ErrAmountInvalid          = errors.New("invalid amount")
 	ErrAmountGreaterThanStock = errors.New("amount greater than stock")
@@ -66,6 +69,7 @@ var (
 	ErrorProductInvalid        = NewError(ErrProductInvalid.Error(), "40006", http.StatusBadRequest)
 	ErrorStockInvalid          = NewError(ErrStockInvalid.Error(), "40007", http.StatusBadRequest)
 	ErrorPriceInvalid          = NewError(ErrPriceInvalid.Error(), "40008", http.StatusBadRequest)
+	ErrorQuantityInvalid       = NewError(ErrQuantityInvalid.Error(), "40008", http.StatusBadRequest)
 	ErrorIDCategorieInvalid    = NewError(ErrIDCategorieInvalid.Error(), "40010", http.StatusBadRequest)
 	ErrorInvalidAmount         = NewError(ErrAmountInvalid.Error(), "40009", http.StatusBadRequest)
 

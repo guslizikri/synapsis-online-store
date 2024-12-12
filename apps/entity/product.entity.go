@@ -39,6 +39,10 @@ func (p Product) Validate() (err error) {
 	if err != nil {
 		return
 	}
+	err = p.ValidateID_Categorie()
+	if err != nil {
+		return
+	}
 	return
 }
 func (p Product) ValidateName() (err error) {

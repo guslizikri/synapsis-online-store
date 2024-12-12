@@ -43,7 +43,7 @@ func (r *RepoProduct) CreateProduct(ctx context.Context, model entity.Product) (
 	return
 }
 
-func (r RepoProduct) GetAllProduct(ctx context.Context, model entity.ProductQuery) (products []entity.Product, err error) {
+func (r *RepoProduct) GetAllProduct(ctx context.Context, model entity.ProductQuery) (products []entity.Product, err error) {
 	filterQuery := ""
 	args := []interface{}{model.Cursor} // Placeholder pertama untuk id > $1
 

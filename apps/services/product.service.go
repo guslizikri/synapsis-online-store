@@ -23,7 +23,7 @@ func NewServiceProduct(repo RepoProductIF) *ServiceProduct {
 	}
 }
 
-func (s ServiceProduct) CreateProduct(ctx context.Context, req request.CreateProductRequestPayload) (err error) {
+func (s *ServiceProduct) CreateProduct(ctx context.Context, req request.CreateProductRequestPayload) (err error) {
 	productEntity := entity.NewProductFromCreateProductRequest(req)
 
 	err = productEntity.Validate()
@@ -38,7 +38,7 @@ func (s ServiceProduct) CreateProduct(ctx context.Context, req request.CreatePro
 	return
 }
 
-func (s ServiceProduct) ListProducts(ctx context.Context, req request.ListProductRequestPayload) (products []entity.Product, err error) {
+func (s *ServiceProduct) ListProducts(ctx context.Context, req request.ListProductRequestPayload) (products []entity.Product, err error) {
 	queryParam := entity.NewProductQueryFromListProductRequest(req)
 
 	products, err = s.repo.GetAllProduct(ctx, queryParam)
