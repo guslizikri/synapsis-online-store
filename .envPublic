@@ -1,0 +1,12 @@
+APP_ENV=dev
+PORT=8081
+
+DB_HOST="localhost"
+DB_NAME="online-store"
+DB_USER="admin"
+DB_PASS="admin"
+DB_PORT=5432
+
+
+
+

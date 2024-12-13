@@ -8,6 +8,7 @@ import (
 	"synapsis-online-store/pkg"
 
 	"github.com/gofiber/fiber/v2"
+	_ "github.com/joho/godotenv/autoload"
 )
 
 func main() {
@@ -24,7 +25,7 @@ func main() {
 	}
 
 	router := fiber.New(fiber.Config{
-		Prefork: true,
+		Prefork: false,
 		AppName: config.Cfg.App.Name,
 	})
 

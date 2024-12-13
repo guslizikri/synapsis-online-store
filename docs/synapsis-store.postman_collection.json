@@ -1,0 +1,299 @@
+{
+  "info": {
+    "_postman_id": "d8779785-609f-49eb-ba0d-9ec63f60cdb7",
+    "name": "synapsis-store",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "32337201"
+  },
+  "item": [
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "zikri@gmail.com",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "123456",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{localhost}}:8081/users/register",
+              "host": ["{{localhost}}"],
+              "port": "8081",
+              "path": ["users", "register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "zikri2@gmail.com",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "123456",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{localhost}}:8081/users/login",
+              "host": ["{{localhost}}"],
+              "port": "8081",
+              "path": ["users", "login"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "product",
+      "item": [
+        {
+          "name": "get product",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{localhost}}:8081/product?categories_id=2",
+              "host": ["{{localhost}}"],
+              "port": "8081",
+              "path": ["product"],
+              "query": [
+                {
+                  "key": "cursor",
+                  "value": "3",
+                  "disabled": true
+                },
+                {
+                  "key": "size",
+                  "value": "5",
+                  "disabled": true
+                },
+                {
+                  "key": "categories_id",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create product",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "name",
+                  "value": "Jacket",
+                  "type": "text"
+                },
+                {
+                  "key": "price",
+                  "value": "300000",
+                  "type": "text"
+                },
+                {
+                  "key": "stock",
+                  "value": "100",
+                  "type": "text"
+                },
+                {
+                  "key": "id_categorie",
+                  "value": "2",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{localhost}}:8081/product",
+              "host": ["{{localhost}}"],
+              "port": "8081",
+              "path": ["product"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "cart",
+      "item": [
+        {
+          "name": "get list cart item",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRhYzE1MDFkLThjMzQtNDhiZS04YTdmLWU5MzJmMDdiNjJmZSIsInJvbGUiOiJ1c2VyIn0.GoRr7yMwO1lmpRmMy6BXjPWrb6aai4Rp6YR22NuYGGI",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{localhost}}:8081/cart",
+              "host": ["{{localhost}}"],
+              "port": "8081",
+              "path": ["cart"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "3",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "5",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete prod from cart",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRhYzE1MDFkLThjMzQtNDhiZS04YTdmLWU5MzJmMDdiNjJmZSIsInJvbGUiOiJ1c2VyIn0.GoRr7yMwO1lmpRmMy6BXjPWrb6aai4Rp6YR22NuYGGI",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{localhost}}:8081/cart/2",
+              "host": ["{{localhost}}"],
+              "port": "8081",
+              "path": ["cart", "2"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "add product to cart",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRhYzE1MDFkLThjMzQtNDhiZS04YTdmLWU5MzJmMDdiNjJmZSIsInJvbGUiOiJ1c2VyIn0.GoRr7yMwO1lmpRmMy6BXjPWrb6aai4Rp6YR22NuYGGI",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "product_id",
+                  "value": "2",
+                  "type": "text"
+                },
+                {
+                  "key": "quantity",
+                  "value": "1",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{localhost}}:8081/cart",
+              "host": ["{{localhost}}"],
+              "port": "8081",
+              "path": ["cart"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "transaction",
+      "item": [
+        {
+          "name": "create trx",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImU1NGU2MTNiLWFhNWUtNDI2Yi05MzlhLTM5MjRjZDVlMmE0YyIsInJvbGUiOiJ1c2VyIn0.s9WpRFX_Co2DoEZViB5TinCPovUEGdosC-8TvQOXozU",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"item_transaction\": [\r\n        {\r\n            \"product_id\": 2,\r\n            \"quantity\": 2\r\n        },\r\n        {\r\n            \"product_id\": 1,\r\n            \"quantity\": 1\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{localhost}}:8081/transaction",
+              "host": ["{{localhost}}"],
+              "port": "8081",
+              "path": ["transaction"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

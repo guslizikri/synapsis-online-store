@@ -3,6 +3,7 @@ package pkg
 import (
 	"fmt"
 	"log"
+	"os"
 	"synapsis-online-store/config"
 	"time"
 
@@ -11,7 +12,12 @@ import (
 )
 
 func ConnectPostgres(cfg config.DBConfig) (db *sqlx.DB, err error) {
-	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", cfg.Host, cfg.Port, cfg.User, cfg.Password, cfg.Name)
+	host := os.Getenv("DB_HOST")
+	user := os.Getenv("DB_USER")
+	password := os.Getenv("DB_PASS")
+	dbname := os.Getenv("DB_NAME")
+	dbport := os.Getenv("DB_PORT")
+	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", host, dbport, user, password, dbname)
 
 	db, err = sqlx.Connect("postgres", dsn)
 	if err != nil {
