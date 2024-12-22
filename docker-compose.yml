@@ -18,9 +18,15 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
     networks:
       - netgo
+
+  redis:
+    image: redis
+    container_name: redis_online_store
+    restart: always
+    ports:
+      - 6377:6379
 
   backend:
     container_name: gostore

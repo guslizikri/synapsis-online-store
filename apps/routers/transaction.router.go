@@ -8,9 +8,10 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/jmoiron/sqlx"
+	"github.com/redis/go-redis/v9"
 )
 
-func InitTransaction(router fiber.Router, db *sqlx.DB) {
+func InitTransaction(router fiber.Router, db *sqlx.DB, client *redis.Client) {
 	repo := repository.NewRepoTransaction(db)
 	svc := services.NewServiceTransaction(repo)
 	handler := handlers.NewHandlerTransaction(svc)
@@ -18,7 +19,7 @@ func InitTransaction(router fiber.Router, db *sqlx.DB) {
 	transactionRouter := router.Group("transaction")
 	{
 		transactionRouter.Post("",
-			middleware.CheckAuth(),
+			middleware.CheckAuth(client),
 			handler.CreateTransaction,
 		)
 	}

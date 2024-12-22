@@ -27,7 +27,11 @@ func init() {
 	if err != nil {
 		return
 	}
-	repo := repository.NewRepoUser(db)
+	client, err := pkg.ConnectRedis(context.Background(), "localhost:6377", "")
+	if err != nil {
+		return
+	}
+	repo := repository.NewRepoUser(db, client)
 	svcUser = NewServiceUser(repo)
 }
 

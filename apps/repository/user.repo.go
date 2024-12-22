@@ -5,17 +5,21 @@ import (
 	"database/sql"
 	"synapsis-online-store/apps/entity"
 	"synapsis-online-store/pkg"
+	"time"
 
 	"github.com/jmoiron/sqlx"
+	"github.com/redis/go-redis/v9"
 )
 
 type RepoUser struct {
-	db *sqlx.DB
+	db    *sqlx.DB
+	redis *redis.Client
 }
 
-func NewRepoUser(db *sqlx.DB) *RepoUser {
+func NewRepoUser(db *sqlx.DB, client *redis.Client) *RepoUser {
 	return &RepoUser{
-		db: db,
+		db:    db,
+		redis: client,
 	}
 }
 
@@ -55,4 +59,8 @@ func (r *RepoUser) GetUserByEmail(ctx context.Context, email string) (model enti
 		return
 	}
 	return
+}
+
+func (r *RepoUser) BlacklistToken(token string, expiration time.Duration) (err error) {
+	return r.redis.Set(context.Background(), token, "blacklisted", expiration).Err()
 }

@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"strings"
@@ -8,9 +9,10 @@ import (
 	"synapsis-online-store/pkg"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/redis/go-redis/v9"
 )
 
-func CheckAuth() fiber.Handler {
+func CheckAuth(redis *redis.Client) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		authorization := c.Get("Authorization")
 		if authorization == "" {
@@ -29,11 +31,27 @@ func CheckAuth() fiber.Handler {
 
 		token := bearer[1]
 
+		// Periksa apakah token di-blacklist
+		result, err := redis.Get(context.Background(), token).Result()
+
+		if err != nil && !strings.Contains(err.Error(), "redis: nil") {
+			log.Println(err)
+			return c.Status(fiber.StatusInternalServerError).SendString("Redis error")
+		}
+
+		if result == "blacklisted" {
+			return pkg.NewResponse(
+				pkg.WithError(pkg.ErrorUnauthorized),
+				pkg.WithMessage("token has been blacklisted"),
+			).Send(c)
+		}
+
 		publicId, role, err := pkg.ValidateToken(token, config.Cfg.App.Encryption.JwtSecret)
 		if err != nil {
 			log.Println(err.Error())
 			return pkg.NewResponse(
 				pkg.WithError(pkg.ErrorUnauthorized),
+				pkg.WithMessage(err.Error()),
 			).Send(c)
 		}
 

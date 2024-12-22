@@ -7,11 +7,13 @@ import (
 	"synapsis-online-store/apps/request"
 	"synapsis-online-store/config"
 	"synapsis-online-store/pkg"
+	"time"
 )
 
 type RepoUserIF interface {
 	GetUserByEmail(ctx context.Context, email string) (model entity.UserEntity, err error)
 	CreateUser(ctx context.Context, model entity.UserEntity) (err error)
+	BlacklistToken(token string, expiration time.Duration) (err error)
 }
 
 type ServiceUser struct {
@@ -79,4 +81,9 @@ func (s *ServiceUser) Login(ctx context.Context, req request.LoginRequestPayload
 	token, err = model.GenerateToken(config.Cfg.App.Encryption.JwtSecret)
 
 	return
+}
+
+func (s *ServiceUser) Logout(token string, expiration time.Duration) error {
+	// Blacklist token dengan menyimpannya ke Redis
+	return s.repo.BlacklistToken(token, expiration)
 }

@@ -2,14 +2,16 @@ package routers
 
 import (
 	"synapsis-online-store/apps/handlers"
+	"synapsis-online-store/apps/middleware"
 	"synapsis-online-store/apps/repository"
 	"synapsis-online-store/apps/services"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/jmoiron/sqlx"
+	"github.com/redis/go-redis/v9"
 )
 
-func InitProduct(router fiber.Router, db *sqlx.DB) {
+func InitProduct(router fiber.Router, db *sqlx.DB, client *redis.Client) {
 	repo := repository.NewRepoProduct(db)
 	svc := services.NewServiceProduct(repo)
 	handler := handlers.NewHandlerProduct(svc)
@@ -18,10 +20,9 @@ func InitProduct(router fiber.Router, db *sqlx.DB) {
 	{
 		productRouter.Get("", handler.GetListProduct)
 		productRouter.Post("",
-			// infrafiber.CheckAuth(),
+			middleware.CheckAuth(client),
 			// infrafiber.CheckRoles([]string{string(users.Role_Admin)}),
 			handler.CreateProduct,
 		)
-		// productRouter.Get("/sku/:sku", handler.GetDetailProduct)
 	}
 }

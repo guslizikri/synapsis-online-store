@@ -2,6 +2,7 @@ package pkg
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -10,6 +11,7 @@ func GenerateToken(id, role, secret string) (tokenString string, err error) {
 	claims := jwt.MapClaims{
 		"id":   id,
 		"role": role,
+		"exp":  jwt.NewNumericDate(time.Now().Add(10 * time.Minute)).Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
