@@ -1,6 +1,6 @@
 app:
   name: synapsis-online-store
-  port: ":8081"
+  port: ":8083"
   encryption:
     salt: 10
     jwt_secret: adfhkjdhjadh

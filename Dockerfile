@@ -25,7 +25,7 @@ COPY --from=build /goapp /app/
 ENV PATH="/app:${PATH}"
 
 # Membuka port 8081
-EXPOSE 8081
+EXPOSE 8082
 
 # Command yang dijalankan saat container start
 ENTRYPOINT [ "gostore" ]

@@ -87,6 +87,12 @@ func (h *HandlerCart) GetListCartItem(ctx *fiber.Ctx) error {
 func (h *HandlerCart) DeleteCartItem(ctx *fiber.Ctx) error {
 	productIdParam := ctx.Params("product_id", "")
 	productID, err := strconv.Atoi(productIdParam)
+	if err != nil {
+		return pkg.NewResponse(
+			pkg.WithMessage("failed conveted to int"),
+			pkg.WithError(pkg.ErrorGeneral),
+		).Send(ctx)
+	}
 
 	publicID := ctx.Locals("PUBLIC_ID").(string)
 	err = h.svc.DeleteCartItem(ctx.UserContext(), publicID, productID)

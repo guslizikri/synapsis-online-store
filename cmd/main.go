@@ -1,12 +1,11 @@
 package main
 
 import (
-	"context"
-	"fmt"
 	"log"
 	"synapsis-online-store/apps/routers"
 	"synapsis-online-store/config"
 	"synapsis-online-store/pkg"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	_ "github.com/joho/godotenv/autoload"
@@ -14,56 +13,41 @@ import (
 
 func main() {
 	filename := "cmd/config.yaml"
-	// timeout := 2 * time.Second
+	timeout := 10 * time.Second
 	if err := config.LoadConfig(filename); err != nil {
-		log.Fatal("error file config.yaml", err)
-	}
-	db, err := pkg.ConnectPostgres(config.Cfg.DB)
-	if err != nil {
-		log.Fatal("error db start", err)
-	}
-	if db != nil {
-		fmt.Println("DB Connected")
+		log.Fatalf("failed to load config from file %s: %v", filename, err)
 	}
 
-	client, err := pkg.ConnectRedis(context.Background(), "localhost:6377", "")
+	db, err := pkg.InitPostgres(config.Cfg.DB)
 	if err != nil {
-		log.Println("redis not connected with error", err.Error())
-		return
+		log.Fatalf("failed to initialize PostgreSQL: %v", err)
 	}
 
-	if client == nil {
-		log.Println("redis not connected with unknown error")
-		return
+	// jika error coba tambahin nama db di uri nya
+	uri := "mongodb://root:example@localhost:27017/"
+	mongoClient, err := pkg.InitMongoDB(timeout, uri)
+	mongoDB := mongoClient.Database("online-store")
+	if err != nil || mongoClient == nil {
+		log.Fatalf("failed to initialize MongoDB: %v", err)
+
 	}
-	log.Println("redis connected")
+	redisCLient, err := pkg.InitRedis(timeout)
+	if err != nil {
+		log.Fatalf("failed to initialize Redis: %v", err)
+	}
 
 	router := fiber.New(fiber.Config{
 		Prefork: false,
 		AppName: config.Cfg.App.Name,
 	})
 
-	routers.InitUser(router, db, client)
-	routers.InitProduct(router, db, client)
-	routers.InitCart(router, db, client)
-	routers.InitTransaction(router, db, client)
+	routers.InitUser(router, db, redisCLient)
+	routers.InitProduct(router, db, redisCLient)
+	routers.InitCart(router, db, redisCLient)
+	routers.InitTransaction(router, db, redisCLient)
+	routers.InitReview(router, mongoDB, db, redisCLient)
 
-	router.Listen(config.Cfg.App.Port)
+	if err := router.Listen(config.Cfg.App.Port); err != nil {
+		log.Fatalf("failed to start server: %v", err)
+	}
 }
-
-// func redis(timeout time.Duration) () {
-// 	ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(timeout))
-// 	defer cancel()
-
-// 	client, err := pkg.ConnectRedis(ctx, "localhost:6377", "")
-// 	if err != nil {
-// 		log.Println("redis not connected with error", err.Error())
-// 		return
-// 	}
-
-// 	if client == nil {
-// 		log.Println("redis not connected with unknown error")
-// 		return
-// 	}
-// 	log.Println("redis connected")
-// }
